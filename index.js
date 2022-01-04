@@ -1,9 +1,5 @@
 const axios = require('axios')
-const sharedExpenseCategories = [
-  'bf0e11a3-0039-4678-930f-b1705fe91384',
-  'a5cf2326-5e43-4e8b-a3c9-0a7e3a1443ba',
-  '76e16b33-3262-44a5-9c1f-a443136f6e8c'
-]
+const { YNAB_DOMAIN, sharedExpenseCategories } = require('./constants')
 
 exports.extract_ynab = async (req, res) => {
   try {
@@ -21,7 +17,7 @@ exports.extract_ynab = async (req, res) => {
     }
 
     const httpRes = await axios(config(sinceDate))
-    console.log('httpRes: ', httpRes)
+    console.log('httpRes: ', httpRes.data.data.transactions)
     httpRes.data.data.transactions.forEach((t) => {
       // Skip deleted transactions.
       if (t.deleted) {
@@ -109,7 +105,7 @@ function newSubtransaction(child, parent) {
 function config(sinceDate) {
   return {
     method: 'get',
-    url: `${process.env.YNAB_DOMAIN}/budgets/${process.env.BUDGET_ID}/transactions?since_date=${sinceDate}`,
+    url: `${YNAB_DOMAIN}/budgets/${process.env.BUDGET_ID}/transactions?since_date=${sinceDate}`,
     headers: { Authorization: `Bearer ${process.env.YNAB_ACCESS_TOKEN}` }
   }
 }

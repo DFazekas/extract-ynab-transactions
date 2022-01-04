@@ -1,20 +1,14 @@
 {
   "main": "index.js",
   "scripts": {
-    "start": "npx functions-framework --target=extract_ynab --signature-type=http",
-    "start:new": "yaml2json env.yaml >.env.json && env-cmd -r ./.env.json functions-framework --target=extract_ynab --signature-type=http",
-    "watch": "npm-watch start:new",
-    "deploy": "gcloud functions deploy extract-ynab --entry-point extract_ynab --trigger-http"
+    "start": "yaml2json .env.yaml > .env.json --pretty && env-cmd -r ./.env.json functions-framework --target=extract_ynab --signature-type=http",
+    "deploy": "gcloud functions deploy extract-ynab --entry-point extract_ynab --trigger-http --env-vars-file .env.yaml"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^2.1.0",
     "env-cmd": "^10.1.0",
-    "npm-watch": "^0.6.0",
-    "yaml2json": "^1.0.2",
-    "yamlenv": "^1.0.0"
-  },
-  "watch": {
-    "start": "*.js"
+    "yamlenv": "^1.0.0",
+    "yamljs": "^0.3.0"
   },
   "dependencies": {
     "axios": "^0.24.0"
