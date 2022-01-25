@@ -1,16 +1,20 @@
 {
+  "name": "extract-ynab",
   "main": "index.js",
+  "author": "Devon Andrew Fazekas",
   "scripts": {
-    "start": "yaml2json .env.yaml > .env.json --pretty && env-cmd -r ./.env.json functions-framework --target=extract_ynab --signature-type=http",
-    "deploy": "gcloud functions deploy extract-ynab --entry-point extract_ynab --trigger-http --env-vars-file .env.yaml"
+    "start": "yaml2json .env.yaml > .env.json --pretty && env-cmd -r ./.env.json functions-framework --source=app/ --target=extract_ynab --signature-type=http",
+    "deploy": "gcloud functions deploy extract-ynab --source=app/ --entry-point extract_ynab --trigger-http --env-vars-file .env.yaml --runtime=nodejs16"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^2.1.0",
     "env-cmd": "^10.1.0",
+    "standard": "^14.3.4",
     "yamlenv": "^1.0.0",
     "yamljs": "^0.3.0"
   },
   "dependencies": {
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "chalk": "4.1.0"
   }
 }
